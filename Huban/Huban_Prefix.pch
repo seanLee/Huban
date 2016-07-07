@@ -1,0 +1,130 @@
+//
+//  Huban_Prefix.pch
+//  Huban
+//
+//  Created by sean on 15/7/22.
+//  Copyright (c) 2015年 sean. All rights reserved.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
+#import "APIUrl.h"
+
+//Category
+#import "UIColor+expanded.h"
+#import "NSString+Common.h"
+#import "NSObject+Common.h"
+#import "UIView+Common.h"
+#import "UITableView+Common.h"
+#import "UIImage+Common.h"
+#import "NSDate+Common.h"
+#import "NSDate+convenience.h"
+#import "UIBarButtonItem+Common.h"
+#import "UIButton+Bootstrap.h"
+#import "UILabel+Common.h"
+#import "UIActionSheet+Common.h"
+#import "NSTimer+Common.h"
+#import "UITTTAttributedLabel.h"
+#import "NSObject+ObjectMap.h"
+#import "NSURL+Common.h"
+#import "UISearchBar+Common.h"
+#import "UIViewController+Common.h"
+#import "NSDate+EaseMob.h"
+
+//Third Part
+#import "APService.h"
+#import <Masonry/Masonry.h>
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveCocoa/RACEXTScope.h>
+#import <BlocksKit/BlocksKit+UIKit.h>
+#import <MBProgressHUD/MBProgressHUD.h>
+#import <FMDB/FMDB.h>
+#import <FMDB/FMDatabaseQueue.h>
+
+#import "Helper.h"
+#import "NetAPIManager.h"
+#import "LocationManager.h"
+#import "DataBaseManager.h"
+#import "EaseMob.h"
+#import "EaseMobHeaders.h"
+#import "EaseMessageModel.h"
+
+//Model
+#import "Login.h"
+#import "User.h"
+#import "Topics.h"
+#import "Contacts.h"
+#import "Users.h"
+#import "ConfirmLogs.h"
+#import "Province.h"
+#import "Region.h"
+#endif
+
+#define SYSBACKGROUNDCOLOR_BLUE             [UIColor colorWithHexString:@"0x028bd1"]
+#define SYSBACKGROUNDCOLOR_DEFAULT          [UIColor colorWithHexString:@"0xfcfcfc"]
+#define SYSFONTCOLOR_BLACK                  [UIColor colorWithHexString:@"0x333333"]
+#define SYSFONTCOLOR_GRAY                   [UIColor colorWithHexString:@"0xcccccc"]
+
+//版本号
+#define kVersion_Coding [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]
+#define kVersionBuild_Coding [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]
+
+//常用变量
+#define DebugLog(s, ...) NSLog(@"%s(%d): %@", __FUNCTION__, __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__])
+#define kTipAlert(_S_, ...)     [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:(_S_), ##__VA_ARGS__] message:nil delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil] show]
+
+#define kKeyWindow [UIApplication sharedApplication].keyWindow
+
+#define kHigher_iOS_6_1 (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1)
+#define kHigher_iOS_6_1_DIS(_X_) ([[NSNumber numberWithBool:kHigher_iOS_6_1] intValue] * _X_)
+#define kNotHigher_iOS_6_1_DIS(_X_) (-([[NSNumber numberWithBool:kHigher_iOS_6_1] intValue]-1) * _X_)
+
+#define kDevice_Is_iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#define kDevice_Is_iPhone6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(750, 1334), [[UIScreen mainScreen] currentMode].size) : NO)
+#define kDevice_Is_iPhone6Plus ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size) : NO)
+
+#define kScreen_Bounds [UIScreen mainScreen].bounds
+#define kScreen_Height [UIScreen mainScreen].bounds.size.height
+#define kScreen_Width [UIScreen mainScreen].bounds.size.width
+#define kStatusBar_Height 20.f
+#define kMySegmentControl_Height 44.f
+#define kMyTabbarControl_Height 49.f
+#define kPaddingLeftWidth 10.f
+
+#define  kBackButtonFontSize 16.f
+#define  kNavTitleFontSize 17.f
+#define  kBaseFont [UIFont systemFontOfSize:13.f]
+#define  kBadgeTipStr @"badgeTip"
+
+
+#define kScaleFrom_iPhone5_Desgin(_X_) (_X_ * (kScreen_Width/320))
+
+//链接颜色
+#define kLinkAttributes     @{(__bridge NSString *)kCTUnderlineStyleAttributeName : [NSNumber numberWithBool:NO],(NSString *)kCTForegroundColorAttributeName : (__bridge id)[UIColor colorWithHexString:@"0x028bd1"].CGColor}
+#define kLinkAttributesActive       @{(NSString *)kCTUnderlineStyleAttributeName : [NSNumber numberWithBool:NO],(NSString *)kCTForegroundColorAttributeName : (__bridge id)[UIColor colorWithHexString:@"0x028bd1"].CGColor,(NSString *)kTTTBackgroundFillColorAttributeName : (__bridge id)[[UIColor lightGrayColor] colorWithAlphaComponent:.4f].CGColor}
+
+///=============================================
+/// @name Weak Object
+///=============================================
+#pragma mark - Weak Object
+
+#define ESWeak(var, weakVar) __weak __typeof(&*var) weakVar = var
+#define ESStrong_DoNotCheckNil(weakVar, _var) __typeof(&*weakVar) _var = weakVar
+#define ESStrong(weakVar, _var) ESStrong_DoNotCheckNil(weakVar, _var); if (!_var) return;
+
+#define ESWeak_(var) ESWeak(var, weak_##var);
+#define ESStrong_(var) ESStrong(weak_##var, _##var);
+
+/** defines a weak `self` named `__weakSelf` */
+#define ESWeakSelf      ESWeak(self, __weakSelf);
+/** defines a strong `self` named `_self` from `__weakSelf` */
+#define ESStrongSelf    ESStrong(__weakSelf, _self);
